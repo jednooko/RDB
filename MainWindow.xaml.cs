@@ -76,6 +76,7 @@ namespace RDB
             var LSD = new ReadDada().CSV();
             var results = new DB().InsertMySQL(LSD);
             var bad = results.Where(x => x.Equals(false)).ToList();
+            Debug.WriteLine($"Wrong recors count: {bad.Count}");
         }
 
         public void bw_RunWorkerCompleted(object sender,
@@ -171,6 +172,9 @@ namespace RDB
                 Stopwatch watch = Stopwatch.StartNew();
                 List<bool> results = new List<bool>();
                 List<string> queryList = new List<string>();
+
+                var drivers = LSD.
+
                 Parallel.ForEach(LSD, new ParallelOptions { MaxDegreeOfParallelism = 8 },
                     trip =>
                     {
@@ -228,7 +232,8 @@ namespace RDB
                         }
                         else
                         {
-                            trip.car1 = db.car.Add(trip.car1); db.SaveChanges();
+                            trip.car1 = db.car.Add(trip.car1);
+                            db.SaveChanges();
                             carOK = true;
                         }
 
@@ -246,7 +251,8 @@ namespace RDB
                         }
                         else
                         {
-                            trip.driver1 = db.driver.Add(trip.driver1); db.SaveChanges();
+                            trip.driver1 = db.driver.Add(trip.driver1);
+                            db.SaveChanges();
                             driverOK = true;
                         }
 
@@ -265,13 +271,15 @@ namespace RDB
                         }
                         else
                         {
-                            trip.gate1 = db.gate.Add(trip.gate1); db.SaveChanges();
+                            trip.gate1 = db.gate.Add(trip.gate1);
+                            db.SaveChanges();
                             gateOK = true;
                         }
 
                     lock (db.pass)
                     {
-                        trip.pass1 = db.pass.Add(trip.pass1); db.SaveChanges();
+                        trip.pass1 = db.pass.Add(trip.pass1);
+                        db.SaveChanges();
                     }
 
                     lock (queriList)

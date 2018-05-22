@@ -21,6 +21,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Database;
+using MoreLinq;
 
 namespace RDB
 {
@@ -173,9 +174,10 @@ namespace RDB
                 List<bool> results = new List<bool>();
                 List<string> queryList = new List<string>();
 
-                var drivers = LSD.
 
-                Parallel.ForEach(LSD, new ParallelOptions { MaxDegreeOfParallelism = 8 },
+
+
+                Parallel.ForEach(LSD, new ParallelOptions { MaxDegreeOfParallelism = 1 },
                     trip =>
                     {
                         results.Add(insertTrip(trip, ref queryList));
@@ -189,7 +191,7 @@ namespace RDB
                 Debug.WriteLine($"Execute: {watch.Elapsed.Seconds}");
                 return results;
             }
-
+            
             public void Execute<T>(List<T> queryList, int nSize = 1000)
             {
                 var list = new List<List<T>>();
